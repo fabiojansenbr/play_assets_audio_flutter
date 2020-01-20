@@ -3,7 +3,14 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _playEnabled = true;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,13 +25,13 @@ class MyApp extends StatelessWidget {
             children: <Widget>[
               new IconButton(
                 iconSize: 40,
-                onPressed: _playMusic,
+                onPressed: _playEnabled ? _playMusic : null,
                 icon: Icon(Icons.play_arrow),
                 color: Colors.teal,
               ),
               new IconButton(
                 iconSize: 40,
-                onPressed: _stopMusic,
+                onPressed: _playEnabled ? null : _stopMusic,
                 icon: Icon(Icons.pause),
                 color: Colors.teal,
               ),
@@ -44,10 +51,18 @@ class MyApp extends StatelessWidget {
     ));
 
     _assetsAudioPlayer.play();
+
+    setState(() {
+      _playEnabled = false;
+    });
   }
 
   _stopMusic() {
     AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer();
     _assetsAudioPlayer.stop();
+
+    setState(() {
+      _playEnabled = true;
+    });
   }
 }
